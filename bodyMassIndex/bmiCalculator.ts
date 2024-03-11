@@ -18,7 +18,10 @@ const parseArguments = (args: string[]): MultiplyValues => {
 }
 
 const calculateBmi = (height: number, weight: number): string => {
-  const bmi = weight / Math.pow(height,2);
+  if (isNaN(height) || isNaN(weight)) {
+    throw new Error('Provided values were not numbers!');
+  }
+  const bmi = weight / Math.pow(height/100, 2);
   if (bmi < 18.4) {
     return 'Underweight';
   }
@@ -43,3 +46,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export default calculateBmi;
