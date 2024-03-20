@@ -1,23 +1,58 @@
-interface Part {
-  name: string
-  exerciseCount: number
-}
+import { CoursePart, courseParts } from "./types"
+import { useState } from "react"
 
 const Header = ({header}: {header: string}) => {
   return <h1>{header}</h1>
 }
 
-const Content = ({courseParts}: {courseParts: Part[]}) => {
+const Part = ({part}: {part: CoursePart}) => {
+  switch (part.kind) {
+    case "background":
+      return (
+        <div>
+          Info: <i>{part.description}</i>, {part.backgroundMaterial}
+        </div>
+      )
+    case "basic":
+      return (
+        <div>
+          Info: <i>{part.description}</i>
+        </div>
+      )  
+    case "group":
+      return (
+        <div>
+          Project count: <i>{part.groupProjectCount}</i>
+        </div>
+      )
+    case "special":
+      return (
+        <div>
+          <p>Info: <i>{part.description}</i></p>
+          <p>Required skills: {part.requirements.join(', ')}</p>
+        </div>
+      )
+    default:
+      return null 
+  }
+}
+
+const Content = ({courseParts}: {courseParts: CoursePart[]}) => {
   return (
-    <div>
-      {courseParts.map((part: Part) => {
+    <ul>
+      {courseParts.map((part: CoursePart) => {
         return (
-          <p>
-            {part.name} {part.exerciseCount}
-          </p>
+          <li>
+            <p>
+              <strong>{part.name}</strong>, total exercises: {part.exerciseCount}
+            </p>
+            <p>
+              <Part part={part}/>
+            </p>
+          </li>
         )
       })}
-    </div>
+    </ul>
   )
 }
 
@@ -26,22 +61,11 @@ const Total = ({total}: {total: number}) => {
 }
 
 const App = () => {
+  const [newNote, setNewNote] = useState('');
+  const [notes, setNotes] = useState<CoursePart[]>([]);
 
-  const courseName = "Half Stack application development";
-  const courseParts = [
-  {
-    name: "Fundamentals",
-    exerciseCount: 10
-  },
-  {
-    name: "Using props to pass data",
-    exerciseCount: 7
-  },
-  {
-    name: "Deeper type usage",
-    exerciseCount: 14
-  }
-  ];
+  const courseName: string = "Half Stack application development";
+  
   const totalExercises = courseParts.reduce((sum, part) => sum + part.exerciseCount, 0);
 
   return (
