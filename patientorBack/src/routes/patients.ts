@@ -10,9 +10,17 @@ router.get('/', (_req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const newPatient: NewPatient = toNewPatient(req.body)
-  const addedPatient: Patient = patientService.addPatient(newPatient);
-  res.json(addedPatient);
+  try {
+    const newPatient: NewPatient = toNewPatient(req.body)
+    const addedPatient: Patient = patientService.addPatient(newPatient);
+    res.status(201).json(addedPatient);
+  } catch (error: unknown) {
+    let errorMessage: string = 'Something went wrong. ';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
 });
 
 export default router;
