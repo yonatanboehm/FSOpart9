@@ -29,4 +29,14 @@ const getOnePatient = (id: string): Patient | undefined => {
   return patient
 }
 
-export default { getNonSensitivePatients, getPatients, addPatient, getOnePatient };
+const addEntry = (id: string, entry: Entry): Entry => {
+  const patient = patientsData.find(p => p.id === id)
+  if (!patient) {
+    throw new Error('wrong id')
+  }
+  patient.entries.push(entry)
+  patientsData.map(p => p.id === id ? patient : p)
+  return entry
+}
+
+export default { getNonSensitivePatients, getPatients, addPatient, getOnePatient, addEntry };

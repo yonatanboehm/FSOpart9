@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link, Routes, useMatch } from "react-router-dom";
+import { Route, Link, Routes, useMatch } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 import { Patient } from "./types";
-import PatientDetails from "./components/Patient";
+import PatientDetails from "./components/Patient/Patient";
 import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
 
@@ -42,7 +42,7 @@ const App = () => {
         <Divider hidden />
         <Routes>
           <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-          <Route path="/patients/:id" element={<PatientDetails patient={patient} />} />
+          <Route path="/patients/:id" element={<PatientDetails patient={patient} setPatient={setPatient} />} />
         </Routes>
       </Container>
     </div>
